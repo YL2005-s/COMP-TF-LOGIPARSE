@@ -1,0 +1,33 @@
+<section class="description-bar">
+  <div class="desc-card">
+    <div class="desc-num">1</div>
+    <div class="desc-content">
+      <div class="desc-title">Análisis Léxico</div>
+      <div class="desc-text">Tokeniza el archivo IDoc SAP identificando segmentos, RUCs, fechas, productos y monedas mediante expresiones regulares y autómatas finitos (AFND → AFD).</div>
+    </div>
+  </div>
+  <div class="desc-arrow">→</div>
+  <div class="desc-card">
+    <div class="desc-num">2</div>
+    <div class="desc-content">
+      <div class="desc-title">Análisis Sintáctico</div>
+      <div class="desc-text">Valida que la estructura siga la gramática formal: un encabezado HDR, uno o más ítems ITM y un pie FTR, generando el árbol sintáctico jerárquico.</div>
+    </div>
+  </div>
+  <div class="desc-arrow">→</div>
+  <div class="desc-card">
+    <div class="desc-num">3</div>
+    <div class="desc-content">
+      <div class="desc-title">Análisis Semántico</div>
+      <div class="desc-text">Comprueba reglas de negocio: RUC de 11 dígitos, fecha válida, conteo de ítems consistente con FTR y coherencia de montos totales declarados.</div>
+    </div>
+  </div>
+  <div class="desc-arrow">→</div>
+  <div class="desc-card">
+    <div class="desc-num">4</div>
+    <div class="desc-content">
+      <div class="desc-title">Traducción SQL</div>
+      <div class="desc-text">Genera sentencias INSERT para SQL Server a partir del AST validado, listo para ejecutar directamente en la base de datos logística.</div>
+    </div>
+  </div>
+</section>

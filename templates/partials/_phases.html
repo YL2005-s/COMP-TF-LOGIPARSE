@@ -1,0 +1,75 @@
+<main class="main" id="main-content">
+
+  <div class="empty-state" id="empty-state">
+    <div class="empty-icon">🏭</div>
+    <h3>LogiParse listo</h3>
+    <p>Carga un archivo TXT generado por SAP para iniciar el análisis compilador de 4 fases.</p>
+  </div>
+
+  <div class="result-banner" id="result-banner"></div>
+
+  <!-- FASE 1: LÉXICO -->
+  <div class="phase-card phase-lexico" id="card-lexico">
+    <div class="phase-header" onclick="togglePhase('lexico')">
+      <div class="phase-num">1</div>
+      <div class="phase-title">Análisis Léxico</div>
+      <div class="phase-badge" id="badge-lexico">—</div>
+      <div class="phase-toggle" id="toggle-lexico">▼</div>
+    </div>
+    <div class="phase-body" id="body-lexico">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('lexico','tokens',this)">Tokens</button>
+        <button class="tab-btn" onclick="showTab('lexico','er',this)">Expresiones regulares</button>
+        <button class="tab-btn" onclick="showTab('lexico','afnd',this)">AFND</button>
+        <button class="tab-btn" onclick="showTab('lexico','afd',this)">AFD</button>
+        <button class="tab-btn" onclick="showTab('lexico','tabla',this)">Tabla</button>
+      </div>
+      <div id="tab-lexico-tokens" class="tab-panel active"></div>
+      <div id="tab-lexico-er"     class="tab-panel"></div>
+      <div id="tab-lexico-afnd"   class="tab-panel"></div>
+      <div id="tab-lexico-afd"    class="tab-panel"></div>
+      <div id="tab-lexico-tabla"  class="tab-panel"></div>
+    </div>
+  </div>
+
+  <!-- FASE 2: SINTÁCTICO -->
+  <div class="phase-card phase-sintactico" id="card-sintactico">
+    <div class="phase-header" onclick="togglePhase('sintactico')">
+      <div class="phase-num">2</div>
+      <div class="phase-title">Análisis Sintáctico</div>
+      <div class="phase-badge" id="badge-sintactico">—</div>
+      <div class="phase-toggle" id="toggle-sintactico">▼</div>
+    </div>
+    <div class="phase-body" id="body-sintactico">
+      <div class="tabs">
+        <button class="tab-btn active" onclick="showTab('sintactico','gram',this)">Gramáticas</button>
+        <button class="tab-btn" onclick="showTab('sintactico','arbol',this)">Árbol sintáctico</button>
+      </div>
+      <div id="tab-sintactico-gram"  class="tab-panel active"></div>
+      <div id="tab-sintactico-arbol" class="tab-panel"></div>
+    </div>
+  </div>
+
+  <!-- FASE 3: SEMÁNTICO -->
+  <div class="phase-card phase-semantico" id="card-semantico">
+    <div class="phase-header" onclick="togglePhase('semantico')">
+      <div class="phase-num">3</div>
+      <div class="phase-title">Análisis Semántico</div>
+      <div class="phase-badge" id="badge-semantico">—</div>
+      <div class="phase-toggle" id="toggle-semantico">▼</div>
+    </div>
+    <div class="phase-body" id="body-semantico"></div>
+  </div>
+
+  <!-- FASE 4: TRADUCCIÓN -->
+  <div class="phase-card phase-traduccion" id="card-traduccion">
+    <div class="phase-header" onclick="togglePhase('traduccion')">
+      <div class="phase-num">4</div>
+      <div class="phase-title">Traducción → SQL Server</div>
+      <div class="phase-badge" id="badge-traduccion">—</div>
+      <div class="phase-toggle" id="toggle-traduccion">▼</div>
+    </div>
+    <div class="phase-body" id="body-traduccion"></div>
+  </div>
+
+</main>

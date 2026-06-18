@@ -1,0 +1,35 @@
+<aside class="sidebar">
+  <div>
+    <div class="section-label">Cargar archivo SAP</div>
+    <div class="upload-zone" id="upload-zone">
+      <input type="file" class="upload-input" id="file-input" accept=".txt">
+      <span class="upload-icon">📂</span>
+      <div class="upload-text">
+        <strong>Arrastra tu archivo TXT</strong><br>
+        o haz clic para seleccionar<br>
+      </div>
+      <div class="file-selected" id="file-selected"></div>
+    </div>
+  </div>
+
+  <button class="btn-procesar" id="btn-procesar" onclick="procesar()" disabled>
+    Compilar archivo
+  </button>
+
+  <div>
+    <div class="section-label">Archivos de ejemplo</div>
+    <button class="sample-btn" onclick="cargarEjemplo('valido')">ORD-2026-001.txt — Válido</button>
+    <button class="sample-btn" onclick="cargarEjemplo('error_lexico')" style="margin-top:0.4rem">ORD-ERROR-LEX.txt — Error léxico</button>
+    <button class="sample-btn" onclick="cargarEjemplo('error_sem')" style="margin-top:0.4rem">ORD-ERROR-SEM.txt — Error semántico</button>
+  </div>
+
+  <div id="download-section" style="display:none">
+    <div class="section-label">Descargas</div>
+    <button class="btn-download btn-sql" id="btn-sql" onclick="descargarSQL()">
+      Descargar .sql
+    </button>
+    <button class="btn-download btn-pdf" id="btn-pdf" onclick="descargarPDF()" style="margin-top:0.5rem">
+      Descargar reporte PDF
+    </button>
+  </div>
+</aside>
