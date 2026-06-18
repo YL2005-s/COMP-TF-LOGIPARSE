@@ -121,13 +121,46 @@ function renderLexico(data) {
   document.getElementById('tab-lexico-tokens').innerHTML = html;
 
   if (data.expresiones) {
-    let er = '<table class="data-table"><thead><tr><th>Token</th><th>Expresión regular</th><th>Ejemplos</th></tr></thead><tbody>';
-    data.expresiones.forEach(e => {
-      er += `<tr><td><span class="tok tok-${e.token}">${e.token}</span></td>
-             <td style="font-family:var(--mono);color:var(--orange)">${escHtml(e.expresion)}</td>
-             <td style="color:var(--text-dim)">${e.ejemplos}</td></tr>`;
+    let er = '<div style="overflow-x:auto"><table class="data-table" style="min-width:1000px">';
+    er += '<thead><tr>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:190px">Token</th>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Descripción</th>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem">Ejemplos de Lexemas</th>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:160px">Expresión Regular</th>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Lenguaje</th>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:180px">Gramática</th>';
+    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Producciones</th>';
+    er += '</tr></thead><tbody>';
+
+    data.expresiones.forEach((e, idx) => {
+      const rowBg = idx % 2 === 1 ? 'background:rgba(255,255,255,0.02)' : '';
+      const prods = (e.producciones || []).join('\n');
+      er += `<tr style="${rowBg}">
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top">
+          <span class="tok tok-${e.token}">${e.token}</span>
+        </td>
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-size:0.8rem;color:var(--text)">
+          ${e.descripcion || ''}
+        </td>
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:#8b9ab0">
+          ${e.ejemplos}
+        </td>
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:#F97316">
+          ${escHtml(e.expresion)}
+        </td>
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;color:#3B82F6">
+          ${e.lenguaje || ''}
+        </td>
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:#F59E0B">
+          ${e.gramatica || ''}
+        </td>
+        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;font-size:0.7rem;color:#A78BFA;white-space:pre-line">
+          ${escHtml(prods)}
+        </td>
+      </tr>`;
     });
-    er += '</tbody></table>';
+
+    er += '</tbody></table></div>';
     document.getElementById('tab-lexico-er').innerHTML = er;
   }
 

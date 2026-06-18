@@ -76,8 +76,96 @@ def analizar_lexico(contenido: str) -> dict:
 
 def get_expresiones_regulares() -> list:
     """Retorna la lista de tokens con sus expresiones regulares."""
+    _meta = {
+        'mis_segmentos_doc': {
+            'descripcion': 'Identificador del tipo de segmento en el documento IDoc',
+            'lenguaje':    'L = { HDR, ITM, FTR }',
+            'gramatica':   'SEG → HDR | ITM | FTR',
+            'producciones': ['SEG → HDR', 'SEG → ITM', 'SEG → FTR'],
+        },
+        'mis_codigos_orden': {
+            'descripcion': 'Código único de orden en formato PREFIJO-AÑO-SECUENCIA',
+            'lenguaje':    'L = { s-aaaa-nnn | s ∈ [A-Z]+, a ∈ {0-9}, n ∈ {0-9} }',
+            'gramatica':   "COD → LETRA+ '-' DIGITO{4} '-' DIGITO{3}",
+            'producciones': ['COD → PREF SEP AÑO SEP SEQ', 'PREF → [A-Z]+', 'AÑO → [0-9]{4}', 'SEQ → [0-9]{3}'],
+        },
+        'mis_variables_ruc': {
+            'descripcion': 'Registro Único de Contribuyente peruano de 11 dígitos',
+            'lenguaje':    'L = { w ∈ {0-9}* | |w| = 11 }',
+            'gramatica':   'RUC → D D D D D D D D D D D',
+            'producciones': ['RUC → D{11}', 'D → [0-9]'],
+        },
+        'mis_variables_fecha': {
+            'descripcion': 'Fecha en formato DDMMYYYY sin separadores',
+            'lenguaje':    'L = { w ∈ {0-9}* | |w| = 8 }',
+            'gramatica':   'FECHA → DD MM YYYY',
+            'producciones': ['FECHA → DD MM YYYY', 'DD → [0-9]{2}', 'MM → [0-9]{2}', 'YYYY → [0-9]{4}'],
+        },
+        'mis_motivos_traslado': {
+            'descripcion': 'Motivo del traslado de mercadería entre empresas',
+            'lenguaje':    'L = { VENTA, COMPRA, DEVOLUCION }',
+            'gramatica':   'MOT → VENTA | COMPRA | DEVOLUCION',
+            'producciones': ['MOT → VENTA', 'MOT → COMPRA', 'MOT → DEVOLUCION'],
+        },
+        'mis_tipos_moneda': {
+            'descripcion': 'Tipo de moneda de la transacción comercial',
+            'lenguaje':    'L = { PEN, USD }',
+            'gramatica':   'MON → PEN | USD',
+            'producciones': ['MON → PEN', 'MON → USD'],
+        },
+        'mis_codigos_item': {
+            'descripcion': 'Número de ítem dentro de la orden con ceros a la izquierda',
+            'lenguaje':    'L = { w ∈ {0-9}* | |w| = 3 }',
+            'gramatica':   'ITEM → D D D',
+            'producciones': ['ITEM → D{3}', 'D → [0-9]'],
+        },
+        'mis_nombres_producto': {
+            'descripcion': 'Nombre de producto en formato palabra-palabra en minúsculas',
+            'lenguaje':    "L = { a-b | a,b ∈ [a-z]+ }",
+            'gramatica':   "PROD → PALABRA '-' PALABRA",
+            'producciones': ['PROD → PAL SEP PAL', 'PAL → [a-z]+', "SEP → '-'"],
+        },
+        'mis_unidades_medida': {
+            'descripcion': 'Unidad de medida del producto en la orden logística',
+            'lenguaje':    'L = { KG, SAC, CAJA, UNID }',
+            'gramatica':   'UNI → KG | SAC | CAJA | UNID',
+            'producciones': ['UNI → KG', 'UNI → SAC', 'UNI → CAJA', 'UNI → UNID'],
+        },
+        'mis_estados_orden': {
+            'descripcion': 'Estado actual de procesamiento de la orden logística',
+            'lenguaje':    'L = { PENDIENTE, PROCESADO, ANULADO }',
+            'gramatica':   'EST → PENDIENTE | PROCESADO | ANULADO',
+            'producciones': ['EST → PENDIENTE', 'EST → PROCESADO', 'EST → ANULADO'],
+        },
+        'mis_variables_decimales': {
+            'descripcion': 'Número decimal con exactamente dos cifras decimales',
+            'lenguaje':    "L = { w.dd | w ∈ {0-9}+, d ∈ {0-9} }",
+            'gramatica':   "DEC → NUM '.' D D",
+            'producciones': ["DEC → NUM '.' DD", 'NUM → [0-9]+', 'DD → [0-9]{2}'],
+        },
+        'mis_variables_numericas': {
+            'descripcion': 'Número entero positivo sin decimales',
+            'lenguaje':    'L = { w ∈ {0-9}+ }',
+            'gramatica':   'NUM → D+',
+            'producciones': ['NUM → D+', 'D → [0-9]'],
+        },
+        'mis_variables_texto': {
+            'descripcion': 'Cadena alfanumérica libre para valores de texto general',
+            'lenguaje':    r'L = { w ∈ (A-Za-z0-9\-\.)+ }',
+            'gramatica':   'TXT → CHAR+',
+            'producciones': ['TXT → CHAR+', r'CHAR → [A-Za-z0-9\-\.]'],
+        },
+    }
     return [
-        {'token': nombre, 'expresion': patron, 'ejemplos': _ejemplos(nombre)}
+        {
+            'token':       nombre,
+            'expresion':   patron,
+            'ejemplos':    _ejemplos(nombre),
+            'descripcion': _meta[nombre]['descripcion'],
+            'lenguaje':    _meta[nombre]['lenguaje'],
+            'gramatica':   _meta[nombre]['gramatica'],
+            'producciones': _meta[nombre]['producciones'],
+        }
         for nombre, patron in TOKENS
     ]
 
