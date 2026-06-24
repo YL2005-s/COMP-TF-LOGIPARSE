@@ -140,3 +140,20 @@ def analizar_sintactico(resultado_lexico: dict) -> dict:
         'arbol':        arbol,
         'producciones': PRODUCCIONES
     }
+
+
+def get_plantillas_gramatica():
+    nombres_campo = {
+        'HDR': ['segmento', 'codigo_orden', 'ruc_emisor', 'ruc_receptor', 'fecha', 'motivo', 'moneda'],
+        'ITM': ['segmento', 'codigo_item', 'producto', 'cantidad', 'unidad', 'precio'],
+        'FTR': ['segmento', 'total_items', 'monto_total', 'estado'],
+    }
+    return [
+        {
+            'segmento': seg,
+            'nombre': GRAMATICA[seg]['nombre'],
+            'campos': [{'lexema': nombre, 'token': tipo[0]}
+                       for nombre, tipo in zip(nombres_campo[seg], GRAMATICA[seg]['tipos'])]
+        }
+        for seg in ['HDR', 'ITM', 'FTR']
+    ]

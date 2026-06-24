@@ -26,8 +26,38 @@
       </div>
       <div id="tab-lexico-tokens" class="tab-panel active"></div>
       <div id="tab-lexico-er"     class="tab-panel"></div>
-      <div id="tab-lexico-afnd"   class="tab-panel"></div>
-      <div id="tab-lexico-afd"    class="tab-panel"></div>
+      <div id="tab-lexico-afnd" class="tab-panel">
+        <div id="afnd-global-content"></div>
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #1E2D47">
+          <p style="font-size:0.7rem;color:#5C7094;margin-bottom:0.75rem;
+                    letter-spacing:1px;text-transform:uppercase">
+            Autómata individual por token
+          </p>
+          <select id="selector-token-afnd" onchange="mostrarAutomataToken('afnd', this.value)"
+            style="background:var(--surface);border:1px solid var(--border);color:var(--text);
+                   padding:0.5rem 0.75rem;border-radius:6px;font-family:JetBrains Mono,monospace;
+                   font-size:0.78rem;width:100%;margin-bottom:1rem">
+            <option value="">Selecciona un token...</option>
+          </select>
+          <div id="resultado-token-afnd"></div>
+        </div>
+      </div>
+      <div id="tab-lexico-afd" class="tab-panel">
+        <div id="afd-global-content"></div>
+        <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #1E2D47">
+          <p style="font-size:0.7rem;color:#5C7094;margin-bottom:0.75rem;
+                    letter-spacing:1px;text-transform:uppercase">
+            Autómata individual por token
+          </p>
+          <select id="selector-token-afd" onchange="mostrarAutomataToken('afd', this.value)"
+            style="background:var(--surface);border:1px solid var(--border);color:var(--text);
+                   padding:0.5rem 0.75rem;border-radius:6px;font-family:JetBrains Mono,monospace;
+                   font-size:0.78rem;width:100%;margin-bottom:1rem">
+            <option value="">Selecciona un token...</option>
+          </select>
+          <div id="resultado-token-afd"></div>
+        </div>
+      </div>
       <div id="tab-lexico-tabla"  class="tab-panel"></div>
     </div>
   </div>

@@ -1,0 +1,43 @@
+<section class="case-origin">
+  <div class="case-origin-header">
+    <span class="case-origin-tag">Caso de estudio</span>
+    <h2 class="case-origin-title">Alicorp S.A. → Ransa Logística</h2>
+  </div>
+
+  <div class="origin-flow">
+    <div class="origin-card">
+      <div class="origin-icon">🏭</div>
+      <div class="origin-label">Proceso o equipo</div>
+      <div class="origin-desc">
+        El sistema SAP del proveedor (Alicorp) genera automáticamente
+        la orden de despacho al confirmarse una venta
+      </div>
+    </div>
+
+    <div class="origin-arrow">→</div>
+
+    <div class="origin-card">
+      <div class="origin-icon">📄</div>
+      <div class="origin-label">Genera la siguiente información:</div>
+      <code class="origin-sample">HDR|ORD-2026-001|20100055237|...</code>
+    </div>
+
+    <div class="origin-arrow">→</div>
+
+    <div class="origin-card">
+      <div class="origin-icon">💾</div>
+      <div class="origin-label">Se registra en un archivo</div>
+      <div class="origin-desc">ORD-2026-001.txt — formato IDoc plano, sin estructura validada</div>
+    </div>
+  </div>
+
+  <div class="origin-input-method">
+    <span class="origin-input-badge">Ingreso al sistema</span>
+    <p>
+      <strong>Carga de archivo (.txt)</strong> — el operario logístico de Ransa
+      no escribe instrucciones manualmente; solo carga el archivo que el
+      sistema SAP de Alicorp generó automáticamente. LogiParse valida y
+      traduce ese archivo a SQL Server.
+    </p>
+  </div>
+</section>

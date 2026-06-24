@@ -3,10 +3,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 
 from flask import Flask, render_template, request, jsonify, send_file
 from core.lexico import analizar_lexico, get_expresiones_regulares
-from core.sintactico import analizar_sintactico
+from core.sintactico import analizar_sintactico, get_plantillas_gramatica
 from core.semantico import analizar_semantico
 from core.traductor import traducir_a_sql
-from automatas.generador import generar_automatas
+from automatas.generador import generar_automatas, generar_automatas_por_token
 from reporte.pdf_generator import generar_pdf
 import io
 
@@ -37,6 +37,7 @@ def procesar():
             'lexico': lexico,
             'expresiones': get_expresiones_regulares(),
             'automatas': generar_automatas(),
+            'automatas_token': generar_automatas_por_token(),
         })
 
     sintactico = analizar_sintactico(lexico)
@@ -48,6 +49,8 @@ def procesar():
             'sintactico': sintactico,
             'expresiones': get_expresiones_regulares(),
             'automatas': generar_automatas(),
+            'automatas_token': generar_automatas_por_token(),
+            'plantillas_gramatica': get_plantillas_gramatica(),
         })
 
     semantico = analizar_semantico(lexico)
@@ -60,6 +63,8 @@ def procesar():
             'semantico': semantico,
             'expresiones': get_expresiones_regulares(),
             'automatas': generar_automatas(),
+            'automatas_token': generar_automatas_por_token(),
+            'plantillas_gramatica': get_plantillas_gramatica(),
         })
 
     sql = traducir_a_sql(lexico, semantico['resumen'])
@@ -72,6 +77,8 @@ def procesar():
         'sql': sql,
         'expresiones': get_expresiones_regulares(),
         'automatas': generar_automatas(),
+        'automatas_token': generar_automatas_por_token(),
+        'plantillas_gramatica': get_plantillas_gramatica(),
     })
 
 

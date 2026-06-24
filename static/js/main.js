@@ -123,38 +123,38 @@ function renderLexico(data) {
   if (data.expresiones) {
     let er = '<div style="overflow-x:auto"><table class="data-table" style="min-width:1000px">';
     er += '<thead><tr>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:190px">Token</th>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Descripción</th>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem">Ejemplos de Lexemas</th>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:160px">Expresión Regular</th>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Lenguaje</th>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:180px">Gramática</th>';
-    er += '<th style="background:#0F1729;color:#5C7094;font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Producciones</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:190px">Token</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Descripción</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem">Ejemplos de Lexemas</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:160px">Expresión Regular</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Lenguaje</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:180px">Gramática</th>';
+    er += '<th style="background:var(--blue-dim);color:var(--navy);font-size:0.68rem;letter-spacing:1px;text-transform:uppercase;padding:0.5rem 0.75rem;min-width:200px">Producciones</th>';
     er += '</tr></thead><tbody>';
 
     data.expresiones.forEach((e, idx) => {
-      const rowBg = idx % 2 === 1 ? 'background:rgba(255,255,255,0.02)' : '';
+      const rowBg = idx % 2 === 1 ? 'background:rgba(28,43,58,0.03)' : '';
       const prods = (e.producciones || []).join('\n');
       er += `<tr style="${rowBg}">
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top">
           <span class="tok tok-${e.token}">${e.token}</span>
         </td>
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-size:0.8rem;color:var(--text)">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top;font-size:0.8rem;color:var(--text)">
           ${e.descripcion || ''}
         </td>
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:#8b9ab0">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:var(--text-dim)">
           ${e.ejemplos}
         </td>
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:#F97316">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:var(--blue)">
           ${escHtml(e.expresion)}
         </td>
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;color:#3B82F6">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top;color:var(--purple)">
           ${e.lenguaje || ''}
         </td>
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:#F59E0B">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;color:var(--yellow)">
           ${e.gramatica || ''}
         </td>
-        <td style="border:1px solid #1E2D47;padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;font-size:0.7rem;color:#A78BFA;white-space:pre-line">
+        <td style="border:1px solid var(--border);padding:0.5rem 0.75rem;vertical-align:top;font-family:JetBrains Mono,monospace;font-size:0.7rem;color:var(--teal);white-space:pre-line">
           ${escHtml(prods)}
         </td>
       </tr>`;
@@ -165,9 +165,15 @@ function renderLexico(data) {
   }
 
   if (data.automatas) {
-    document.getElementById('tab-lexico-afnd').innerHTML = renderAutomata(data.automatas.afnd, 'AFND');
-    document.getElementById('tab-lexico-afd').innerHTML  = renderAutomata(data.automatas.afd,  'AFD');
+    document.getElementById('afnd-global-content').innerHTML = renderAutomata(data.automatas.afnd, 'AFND');
+    document.getElementById('afd-global-content').innerHTML  =
+      renderAutomata(data.automatas.afd, 'AFD') +
+      renderTuring(data.automatas.turing);
     document.getElementById('tab-lexico-tabla').innerHTML = renderTablaTransiciones(data.automatas.tabla);
+  }
+  if (data.automatas_token) {
+    poblarSelectorTokens('afnd', data.automatas_token);
+    poblarSelectorTokens('afd', data.automatas_token);
   }
 }
 
@@ -227,9 +233,9 @@ function renderAutomata(aut, tipo) {
     const isAcept = aut.estados_aceptacion.includes(e);
     const isInicio = e === aut.estado_inicial;
     const isErr2   = e === 'qE';
-    const fill  = isErr2 ? '#2d1e1e' : isAcept ? '#1a2d1e' : '#131E33';
-    const stroke= isErr2 ? '#EF4444' : isAcept ? '#10B981' : '#3B82F6';
-    const tc    = isErr2 ? '#EF4444' : isAcept ? '#10B981' : '#79c0ff';
+    const fill  = isErr2 ? '#FAD7D3' : isAcept ? '#D4EAE3' : '#D4E3F5';
+    const stroke= isErr2 ? '#C0392B' : isAcept ? '#5D8B7A' : '#2E5E9E';
+    const tc    = isErr2 ? '#C0392B' : isAcept ? '#5D8B7A' : '#2E5E9E';
 
     if (isInicio) {
       svg += `<line x1="${x-r_nodo-25}" y1="${y}" x2="${x-r_nodo-2}" y2="${y}" stroke="#5C7094" stroke-width="1.2" marker-end="url(#arr-err-${tipo})"/>`;
@@ -297,44 +303,93 @@ function renderSintactico(data) {
   gram += '</div>';
   document.getElementById('tab-sintactico-gram').innerHTML = gram;
 
-  document.getElementById('tab-sintactico-arbol').innerHTML = renderArbolSintactico(sint.arbol || []);
+  let plantillasHtml = '';
+  if (data.plantillas_gramatica) {
+    plantillasHtml = '<p style="font-size:0.7rem;color:#5C7094;margin-bottom:0.75rem;' +
+      'letter-spacing:1px;text-transform:uppercase">Plantillas gramaticales (HDR / ITM / FTR)</p>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;margin-bottom:1.5rem">';
+    data.plantillas_gramatica.forEach(p => {
+      plantillasHtml += renderArbolSintactico([p]).replace(
+        'Árbol sintáctico — estructura jerárquica del documento',
+        'Plantilla: ' + p.segmento + ' (' + p.nombre + ')'
+      );
+    });
+    plantillasHtml += '</div>';
+  }
+  plantillasHtml += '<p style="font-size:0.7rem;color:#5C7094;margin:1rem 0 0.75rem;' +
+    'letter-spacing:1px;text-transform:uppercase">Árbol instanciado (documento real procesado)</p>';
+
+  document.getElementById('tab-sintactico-arbol').innerHTML =
+    plantillasHtml + renderArbolSintactico(sint.arbol || []);
 }
 
 function renderArbolSintactico(arbol) {
   if (!arbol.length) return '<p style="color:var(--text-dim);font-size:0.8rem">Sin datos de árbol</p>';
 
-  const W = 900, nW = 110, nH = 32, gapX = 20, gapY = 55;
-  let svg = `<div class="diagram-container"><p style="font-size:0.7rem;color:var(--text-dim);margin-bottom:0.75rem;letter-spacing:1px;text-transform:uppercase">Árbol sintáctico — estructura jerárquica del documento</p>
-<svg viewBox="0 0 ${W} ${arbol.length * (nH + gapY) + 100}" style="width:100%" xmlns="http://www.w3.org/2000/svg">`;
+  const nW = 110, nH = 32, gapY = 55;
+  const minCampoW = 60, campoGap = 8;
 
-  const rootX = W/2 - nW/2, rootY = 20;
-  svg += nodoSVG(rootX, rootY, nW, nH, 'documento', '#1f3a5f', '#79c0ff');
-
+  // Calcular ancho necesario por cada segmento según su cantidad de campos
   const total = arbol.length;
+  const anchosSegmento = arbol.map(seg => {
+    const campos = seg.campos || [];
+    const anchoCampos = campos.length > 0
+      ? campos.length * (minCampoW + campoGap) - campoGap
+      : 0;
+    return Math.max(nW, anchoCampos);
+  });
+
+  const gapSegmento = 30;
+  const anchoContenido = anchosSegmento.reduce((a,b)=>a+b,0) + gapSegmento * Math.max(0, total - 1);
+  const W = Math.max(900, anchoContenido + 80);
+
+  const rootY    = 20;
+  const segY     = rootY + nH + gapY;
+  const camposY  = segY + nH + gapY;
+  const hayCampos = arbol.some(s => (s.campos || []).length > 0);
+  const Hsvg = hayCampos ? (camposY + nH + 40) : (segY + nH + 40);
+
+  let svg = `<div class="diagram-container">
+    <p style="font-size:0.7rem;color:var(--text-dim);margin-bottom:0.75rem;letter-spacing:1px;text-transform:uppercase">Árbol sintáctico — estructura jerárquica del documento</p>
+    <svg viewBox="0 0 ${W} ${Hsvg}" style="width:${W}px;max-width:none;display:block" xmlns="http://www.w3.org/2000/svg">`;
+
+  const rootX = W/2 - nW/2;
+  svg += nodoSVG(rootX, rootY, nW, nH, 'documento', '#D4E3F5', '#2E5E9E');
+
+  // Calcular posición horizontal acumulada de cada segmento
+  let cursorX = 0;
+  const posiciones = [];
+  anchosSegmento.forEach(ancho => {
+    posiciones.push(cursorX);
+    cursorX += ancho + gapSegmento;
+  });
+  const anchoUsado = cursorX - gapSegmento;
+  const offsetCentrado = (W - anchoUsado) / 2;
+
   arbol.forEach((seg, si) => {
-    const segX = (W / (total+1)) * (si+1) - nW/2;
-    const segY = rootY + nH + gapY;
+    const anchoSeg = anchosSegmento[si];
+    const groupX   = posiciones[si] + offsetCentrado;
+    const segX     = groupX + anchoSeg/2 - nW/2;
 
     svg += `<line x1="${rootX + nW/2}" y1="${rootY + nH}" x2="${segX + nW/2}" y2="${segY}" stroke="#1E2D47" stroke-width="1.2"/>`;
 
     const colors = {
-      HDR: ['#1f3a5f','#79c0ff'],
-      ITM: ['#1c2d1e','#56d364'],
-      FTR: ['#2d2a1e','#e3b341']
+      HDR: ['#D4E3F5','#2E5E9E'],
+      ITM: ['#D4EAE3','#5D8B7A'],
+      FTR: ['#F5E8CC','#B07D2E']
     };
-    const [bg, tc] = colors[seg.segmento] || ['#131E33','#CDD5E0'];
+    const [bg, tc] = colors[seg.segmento] || ['#EEF2F8','#1C2B3A'];
     svg += nodoSVG(segX, segY, nW, nH, seg.segmento + ' (' + seg.nombre + ')', bg, tc);
 
     const campos = seg.campos || [];
-    const campoW = Math.min(nW, (W - 40) / Math.max(campos.length, 1));
-    const startX = Math.max(20, segX + nW/2 - (campos.length * (campoW + 8))/2);
-
-    campos.forEach((c, ci) => {
-      const cx2 = startX + ci * (campoW + 8);
-      const cy2 = segY + nH + gapY;
-      svg += `<line x1="${segX + nW/2}" y1="${segY + nH}" x2="${cx2 + campoW/2}" y2="${cy2}" stroke="#1E2D47" stroke-width="1"/>`;
-      svg += nodoSVG(cx2, cy2, campoW, nH-4, c.lexema, '#0F1729', '#CDD5E0', true);
-    });
+    if (campos.length) {
+      const campoW = (anchoSeg - campoGap * (campos.length - 1)) / campos.length;
+      campos.forEach((c, ci) => {
+        const cx2 = groupX + ci * (campoW + campoGap);
+        svg += `<line x1="${segX + nW/2}" y1="${segY + nH}" x2="${cx2 + campoW/2}" y2="${camposY}" stroke="#1E2D47" stroke-width="1"/>`;
+        svg += nodoSVG(cx2, camposY, campoW, nH - 4, c.lexema, '#EEF2F8', '#1C2B3A', true);
+      });
+    }
   });
 
   svg += '</svg></div>';
@@ -343,9 +398,10 @@ function renderArbolSintactico(arbol) {
 
 function nodoSVG(x, y, w, h, label, bg, tc, small=false) {
   const fs = small ? 8 : 10;
-  const txt = label.length > 14 ? label.slice(0,12)+'…' : label;
+  const maxChars = small ? Math.max(6, Math.floor(w / 7)) : 14;
+  const txt = label.length > maxChars ? label.slice(0, maxChars - 1) + '…' : label;
   return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="5" fill="${bg}" stroke="${tc}" stroke-width="1.2"/>
-  <text x="${x+w/2}" y="${y+h/2+fs/3}" text-anchor="middle" font-size="${fs}" fill="${tc}" font-family="JetBrains Mono" font-weight="500">${escHtml(txt)}</text>`;
+  <text x="${x + w/2}" y="${y + h/2 + fs/3}" text-anchor="middle" font-size="${fs}" fill="${tc}" font-family="JetBrains Mono" font-weight="500">${escHtml(txt)}</text>`;
 }
 
 function renderSemantico(data) {
@@ -458,6 +514,138 @@ async function descargarPDF() {
   const a = document.createElement('a');
   a.href = url; a.download = `reporte_logiparse.${ext}`;
   a.click(); URL.revokeObjectURL(url);
+}
+
+function renderTuring(turing) {
+  if (!turing) return '';
+
+  const cinta = turing.cinta_ejemplo || [];
+  let cintaHtml = '<div style="display:flex;gap:2px;margin:0.75rem 0;flex-wrap:wrap">';
+  cinta.forEach((sym, i) => {
+    const isHead = i === 0;
+    cintaHtml += `<div style="
+      min-width:32px;height:32px;
+      border:1px solid ${isHead ? 'var(--blue)' : 'var(--border)'};
+      border-radius:4px;
+      display:flex;align-items:center;justify-content:center;
+      font-family:JetBrains Mono,monospace;font-size:0.8rem;
+      background:${isHead ? 'rgba(46,94,158,0.15)' : 'var(--surface)'};
+      color:${sym === '□' ? 'var(--text-dim)' : 'var(--text)'};
+      position:relative;
+    ">
+      ${escHtml(sym)}
+      ${isHead ? '<div style="position:absolute;top:-14px;font-size:0.6rem;color:var(--blue)">▼</div>' : ''}
+    </div>`;
+  });
+  cintaHtml += '</div>';
+
+  const t = turing.tabla;
+  let tablaHtml = '<div style="overflow-x:auto;margin-top:1rem">';
+  tablaHtml += '<p style="font-size:0.68rem;color:var(--text-dim);margin-bottom:0.5rem;letter-spacing:1px;text-transform:uppercase">Tabla de transiciones — Formato: estado_destino / símbolo_escribe / movimiento</p>';
+  tablaHtml += '<table class="data-table" style="min-width:700px"><thead><tr>';
+  tablaHtml += '<th>Estado</th>';
+  (t.simbolos || []).forEach(s => { tablaHtml += `<th>${escHtml(s)}</th>`; });
+  tablaHtml += '</tr></thead><tbody>';
+  (t.estados || []).forEach((est, idx) => {
+    const isAcept = est === 'qACEPT';
+    const isReject = est === 'qREJECT';
+    const rowBg = idx % 2 === 1 ? 'rgba(28,43,58,0.03)' : 'transparent';
+    tablaHtml += `<tr style="background:${rowBg}">`;
+    const color = isAcept ? 'var(--teal)' : isReject ? 'var(--red)' : 'var(--blue)';
+    tablaHtml += `<td style="font-family:JetBrains Mono,monospace;font-weight:500;color:${color}">${est}</td>`;
+    (t.simbolos || []).forEach(s => {
+      const val = t.transiciones[est]?.[s] || '—';
+      const isErr = val.includes('qR') || val === '—';
+      const isOk  = val.includes('qA') || val.includes('SQL') || val.includes('✓');
+      const tc = isErr ? 'var(--text-dim)' : isOk ? 'var(--teal)' : 'var(--text)';
+      tablaHtml += `<td style="font-family:JetBrains Mono,monospace;font-size:0.72rem;color:${tc}">${escHtml(val)}</td>`;
+    });
+    tablaHtml += '</tr>';
+  });
+  tablaHtml += '</tbody></table></div>';
+
+  let transHtml = '<div style="display:flex;flex-direction:column;gap:0.35rem;margin-top:1rem">';
+  (turing.transiciones || []).forEach(tr => {
+    const isOk = tr.hacia === 'qACEPT' || tr.escribe === 'SQL' || tr.escribe === '✓';
+    const isErr = tr.hacia === 'qREJECT';
+    const color = isErr ? 'var(--red)' : isOk ? 'var(--teal)' : 'var(--text)';
+    transHtml += `<div style="
+      background:var(--surface);border:1px solid var(--border);border-radius:5px;
+      padding:0.4rem 0.75rem;font-size:0.75rem;
+      display:flex;align-items:center;gap:0.75rem;
+    ">
+      <span style="font-family:JetBrains Mono,monospace;color:var(--blue);flex-shrink:0">${tr.desde}</span>
+      <span style="color:var(--text-dim)">→</span>
+      <span style="font-family:JetBrains Mono,monospace;color:${color};flex-shrink:0">${tr.hacia}</span>
+      <span style="color:var(--text-dim);font-size:0.68rem">
+        lee: <span style="color:var(--yellow)">${escHtml(tr.lee)}</span>
+        escribe: <span style="color:var(--purple)">${escHtml(tr.escribe)}</span>
+        mueve: <span style="color:var(--blue)">${tr.mueve}</span>
+      </span>
+      <span style="color:var(--text-dim);font-size:0.68rem;margin-left:auto">${tr.descripcion}</span>
+    </div>`;
+  });
+  transHtml += '</div>';
+
+  return `
+    <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+      <p style="font-size:0.7rem;color:var(--text-dim);margin-bottom:0.75rem;
+                letter-spacing:1px;text-transform:uppercase">
+        Máquina de Turing — Modelo computacional del transpilador TXT→SQL
+      </p>
+      <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem">
+        <p style="font-size:0.78rem;color:var(--text);margin-bottom:0.5rem">
+          <strong style="color:var(--blue)">Descripción:</strong> ${turing.descripcion}
+        </p>
+        <p style="font-size:0.75rem;color:var(--text-dim)">
+          Estado inicial: <span style="color:var(--blue);font-family:JetBrains Mono,monospace">${turing.estado_inicial}</span> &nbsp;|&nbsp;
+          Aceptación: <span style="color:var(--teal);font-family:JetBrains Mono,monospace">${turing.estado_aceptacion}</span> &nbsp;|&nbsp;
+          Rechazo: <span style="color:var(--red);font-family:JetBrains Mono,monospace">${turing.estado_rechazo}</span>
+        </p>
+        <p style="font-size:0.72rem;color:var(--text-dim);margin-top:0.5rem">
+          Cinta de ejemplo (cabezal en posición inicial ▼):
+        </p>
+        ${cintaHtml}
+        <p style="font-size:0.72rem;color:var(--text-dim);margin-top:1rem">
+          Función de transición δ(q, a) = (q', b, D):
+        </p>
+        ${transHtml}
+        ${tablaHtml}
+      </div>
+    </div>`;
+}
+
+let automatasTokenGlobal = null;
+
+function poblarSelectorTokens(tipo, automatasToken) {
+  automatasTokenGlobal = automatasToken;
+  const sel = document.getElementById('selector-token-' + tipo);
+  if (!sel) return;
+  sel.innerHTML = '<option value="">Selecciona un token...</option>';
+  Object.keys(automatasToken).forEach(nombre => {
+    sel.innerHTML += `<option value="${nombre}">${nombre}</option>`;
+  });
+}
+
+function mostrarAutomataToken(tipo, nombreToken) {
+  const cont = document.getElementById('resultado-token-' + tipo);
+  if (!nombreToken || !automatasTokenGlobal) {
+    cont.innerHTML = '';
+    return;
+  }
+  const data = automatasTokenGlobal[nombreToken];
+  if (!data) { cont.innerHTML = ''; return; }
+
+  let html = `<div class="tok tok-${nombreToken}" style="display:inline-block;margin-bottom:0.75rem">${nombreToken}</div>`;
+
+  if (tipo === 'afnd') {
+    html += renderAutomata(data.afnd, 'AFND — ' + nombreToken);
+  } else {
+    html += renderAutomata(data.afd, 'AFD — ' + nombreToken);
+  }
+  html += renderTablaTransiciones(data.tabla);
+
+  cont.innerHTML = html;
 }
 
 function escHtml(s) {
