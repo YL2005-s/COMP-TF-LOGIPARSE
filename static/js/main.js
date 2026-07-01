@@ -179,22 +179,67 @@ function renderLexico(data) {
 
 function renderAutomata(aut, tipo) {
   const estados = aut.estados;
-  const n = estados.length;
-  const cx = 520, cy = 200;
-  const radio = 150;
-  const r_nodo = 28;
+  const r_nodo = 26;
+  const isTrap = s => /^q(E|ERR|REJECT)\d*$/i.test(s);
 
-  const pos = {};
-  estados.forEach((e, i) => {
-    const angle = (2 * Math.PI * i / n) - Math.PI / 2;
-    pos[e] = {
-      x: cx + radio * Math.cos(angle),
-      y: cy + radio * Math.sin(angle)
-    };
+  // Layout izquierda→derecha por niveles BFS desde el estado inicial,
+  // ignorando auto-loops y estados trampa (que se dibujan aparte, abajo)
+  // para que no distorsionen la profundidad del flujo principal.
+  const nonTrap = estados.filter(e => !isTrap(e));
+  const trapStates = estados.filter(isTrap);
+
+  const adj = {};
+  nonTrap.forEach(s => { adj[s] = []; });
+  aut.transiciones.forEach(t => {
+    if (t.desde !== t.hacia && adj[t.desde] && !isTrap(t.hacia) && nonTrap.includes(t.hacia)) {
+      adj[t.desde].push(t.hacia);
+    }
   });
 
+  const level = {};
+  const start = aut.estado_inicial;
+  if (nonTrap.includes(start)) {
+    level[start] = 0;
+    const queue = [start];
+    while (queue.length) {
+      const cur = queue.shift();
+      adj[cur].forEach(nx => {
+        if (!(nx in level)) { level[nx] = level[cur] + 1; queue.push(nx); }
+      });
+    }
+  }
+  let maxLevel = Object.values(level).length ? Math.max(...Object.values(level)) : 0;
+  nonTrap.forEach(s => { if (!(s in level)) { level[s] = ++maxLevel; } });
+  maxLevel = Math.max(0, ...Object.values(level));
+
+  const byLevel = {};
+  nonTrap.forEach(s => { (byLevel[level[s]] = byLevel[level[s]] || []).push(s); });
+  const maxPerLevel = Math.max(1, ...Object.values(byLevel).map(a => a.length));
+
+  const xGap = 130, yGap = 85;
+  const marginX = 60, marginY = 55;
+
+  const pos = {};
+  for (let lvl = 0; lvl <= maxLevel; lvl++) {
+    const group = byLevel[lvl] || [];
+    const offset = (maxPerLevel - group.length) * yGap / 2;
+    group.forEach((s, i) => {
+      pos[s] = { x: marginX + lvl * xGap, y: marginY + offset + i * yGap };
+    });
+  }
+
+  const mainHeight = marginY * 2 + (maxPerLevel - 1) * yGap;
+  const trapY = mainHeight + (trapStates.length ? 50 : 0);
+  trapStates.forEach((s, i) => {
+    const trapGap = xGap * Math.max(1, Math.floor((maxLevel + 1) / Math.max(1, trapStates.length)));
+    pos[s] = { x: marginX + i * trapGap + (maxLevel > 0 ? xGap / 2 : 0), y: trapY };
+  });
+
+  const width = marginX * 2 + maxLevel * xGap + r_nodo * 2;
+  const height = (trapStates.length ? trapY : mainHeight) + r_nodo + 30;
+
   let svg = `<div class="diagram-container"><p style="font-size:0.7rem;color:var(--text-dim);margin-bottom:0.75rem;letter-spacing:1px;text-transform:uppercase">${tipo} — ${aut.descripcion}</p>
-<svg viewBox="0 0 ${cx*2} ${cy*2+40}" style="width:100%;max-height:360px" xmlns="http://www.w3.org/2000/svg">
+<svg viewBox="0 0 ${width} ${height}" style="width:100%;max-height:360px" xmlns="http://www.w3.org/2000/svg">
 <defs>
   <marker id="arr-${tipo}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
     <path d="M0,1L9,5L0,9" fill="none" stroke="#3B82F6" stroke-width="1.5"/>
@@ -204,6 +249,9 @@ function renderAutomata(aut, tipo) {
   </marker>
 </defs>`;
 
+  // Aristas entre estados distintos van en línea recta (convención estándar
+  // en diagramas de autómatas); solo se curvan levemente si existe también
+  // la arista inversa (B→A), para que no se superpongan.
   aut.transiciones.forEach(t => {
     const from = pos[t.desde], to = pos[t.hacia];
     if (!from || !to) return;
@@ -212,19 +260,31 @@ function renderAutomata(aut, tipo) {
     const markId = isErr ? `arr-err-${tipo}` : `arr-${tipo}`;
 
     if (t.desde === t.hacia) {
-      svg += `<path d="M${from.x-10},${from.y-r_nodo} Q${from.x-40},${from.y-70} ${from.x+10},${from.y-r_nodo}"
+      // Lazo simétrico arriba del nodo: los puntos de inicio/fin se calculan
+      // exactamente sobre la circunferencia (no dentro de ella), para que la
+      // punta de la flecha quede visible y no tapada por el trazo del nodo.
+      const half = 22 * Math.PI / 180;
+      const a1 = -Math.PI/2 - half, a2 = -Math.PI/2 + half;
+      const lx1 = from.x + r_nodo*Math.cos(a1), ly1 = from.y + r_nodo*Math.sin(a1);
+      const lx2 = from.x + r_nodo*Math.cos(a2), ly2 = from.y + r_nodo*Math.sin(a2);
+      const loopH = 24;
+      svg += `<path d="M${lx1},${ly1} C${lx1-9},${ly1-loopH} ${lx2+9},${ly2-loopH} ${lx2},${ly2}"
         fill="none" stroke="${color}" stroke-width="1.2" marker-end="url(#${markId})"/>
-        <text x="${from.x-20}" y="${from.y-72}" font-size="9" fill="${color}" font-family="JetBrains Mono">${escHtml(t.con)}</text>`;
+        <text x="${from.x}" y="${from.y - r_nodo - loopH*0.7}" font-size="9" fill="${color}" font-family="JetBrains Mono" text-anchor="middle">${escHtml(t.con)}</text>`;
     } else {
       const dx = to.x - from.x, dy = to.y - from.y;
       const len = Math.sqrt(dx*dx + dy*dy);
       const ux = dx/len, uy = dy/len;
       const x1 = from.x + ux*r_nodo, y1 = from.y + uy*r_nodo;
       const x2 = to.x   - ux*r_nodo, y2 = to.y   - uy*r_nodo;
-      const mx = (x1+x2)/2 - uy*20, my = (y1+y2)/2 + ux*20;
-      svg += `<path d="M${x1},${y1} Q${mx},${my} ${x2},${y2}"
+      const hasReverse = aut.transiciones.some(o => o.desde === t.hacia && o.hacia === t.desde);
+      const bend = hasReverse ? 14 : 0;
+      const mx = (x1+x2)/2 - uy*bend, my = (y1+y2)/2 + ux*bend;
+      const path = bend ? `M${x1},${y1} Q${mx},${my} ${x2},${y2}` : `M${x1},${y1} L${x2},${y2}`;
+      const labelX = bend ? mx : (x1+x2)/2, labelY = bend ? my - 4 : (y1+y2)/2 - 6;
+      svg += `<path d="${path}"
         fill="none" stroke="${color}" stroke-width="1.2" marker-end="url(#${markId})"/>
-        <text x="${mx}" y="${my-4}" font-size="9" fill="${color}" font-family="JetBrains Mono" text-anchor="middle">${escHtml(t.con)}</text>`;
+        <text x="${labelX}" y="${labelY}" font-size="9" fill="${color}" font-family="JetBrains Mono" text-anchor="middle">${escHtml(t.con)}</text>`;
     }
   });
 
@@ -329,7 +389,6 @@ function renderArbolSintactico(arbol) {
   const nW = 110, nH = 32, gapY = 55;
   const minCampoW = 60, campoGap = 8;
 
-  // Calcular ancho necesario por cada segmento según su cantidad de campos
   const total = arbol.length;
   const anchosSegmento = arbol.map(seg => {
     const campos = seg.campos || [];
@@ -356,7 +415,6 @@ function renderArbolSintactico(arbol) {
   const rootX = W/2 - nW/2;
   svg += nodoSVG(rootX, rootY, nW, nH, 'documento', '#D4E3F5', '#2E5E9E');
 
-  // Calcular posición horizontal acumulada de cada segmento
   let cursorX = 0;
   const posiciones = [];
   anchosSegmento.forEach(ancho => {

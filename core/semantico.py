@@ -5,15 +5,14 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
     """
     Aplica las 10 reglas semánticas del dominio logístico.
     """
-    errores    = []
+    errores = []
     advertencias = []
-    lineas     = resultado_lexico['lineas']
+    lineas = resultado_lexico['lineas']
 
-    hdr_data   = None
-    itm_data   = []
-    ftr_data   = None
+    hdr_data = None
+    itm_data = []
+    ftr_data = None
 
-    # Extraer datos por segmento
     for linea in lineas:
         tokens  = linea['tokens']
         if not tokens:
@@ -37,7 +36,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
 
     reglas_aplicadas = []
 
-    # S1 — RUC emisor debe tener 11 dígitos
     ruc_emisor = hdr_data[2]
     if len(ruc_emisor) == 11 and ruc_emisor.isdigit():
         reglas_aplicadas.append({'regla': 'S1', 'descripcion': 'RUC emisor válido', 'estado': '✅', 'valor': ruc_emisor})
@@ -45,7 +43,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         errores.append(f"Error semántico S1: RUC emisor '{ruc_emisor}' debe tener exactamente 11 dígitos")
         reglas_aplicadas.append({'regla': 'S1', 'descripcion': 'RUC emisor válido', 'estado': '❌', 'valor': ruc_emisor})
 
-    # S2 — RUC receptor debe tener 11 dígitos
     ruc_receptor = hdr_data[3]
     if len(ruc_receptor) == 11 and ruc_receptor.isdigit():
         reglas_aplicadas.append({'regla': 'S2', 'descripcion': 'RUC receptor válido', 'estado': '✅', 'valor': ruc_receptor})
@@ -53,7 +50,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         errores.append(f"Error semántico S2: RUC receptor '{ruc_receptor}' debe tener exactamente 11 dígitos")
         reglas_aplicadas.append({'regla': 'S2', 'descripcion': 'RUC receptor válido', 'estado': '❌', 'valor': ruc_receptor})
 
-    # S3 — Fecha debe ser válida
     fecha_raw = hdr_data[4]
     try:
         fecha = datetime.strptime(fecha_raw, '%d%m%Y')
@@ -63,7 +59,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         reglas_aplicadas.append({'regla': 'S3', 'descripcion': 'Fecha de emisión válida', 'estado': '❌', 'valor': fecha_raw})
         fecha = None
 
-    # S4 — Cantidad debe ser mayor a 0
     cantidades_ok = True
     for i, itm in enumerate(itm_data):
         cantidad = int(itm[3])
@@ -72,7 +67,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
             cantidades_ok = False
     reglas_aplicadas.append({'regla': 'S4', 'descripcion': 'Cantidades mayores a 0', 'estado': '✅' if cantidades_ok else '❌', 'valor': f'{len(itm_data)} ítems verificados'})
 
-    # S5 — Precio debe ser mayor a 0
     precios_ok = True
     for i, itm in enumerate(itm_data):
         precio = float(itm[5])
@@ -81,8 +75,7 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
             precios_ok = False
     reglas_aplicadas.append({'regla': 'S5', 'descripcion': 'Precios mayores a 0', 'estado': '✅' if precios_ok else '❌', 'valor': f'{len(itm_data)} precios verificados'})
 
-    # S6 — Total ítems en FTR debe coincidir con líneas ITM
-    total_itm_ftr  = int(ftr_data[1])
+    total_itm_ftr = int(ftr_data[1])
     total_itm_real = len(itm_data)
     if total_itm_ftr == total_itm_real:
         reglas_aplicadas.append({'regla': 'S6', 'descripcion': 'Total ítems coincide con FTR', 'estado': '✅', 'valor': f'{total_itm_real} ítems'})
@@ -90,8 +83,7 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         errores.append(f"Error semántico S6: FTR indica {total_itm_ftr} ítems pero existen {total_itm_real} líneas ITM")
         reglas_aplicadas.append({'regla': 'S6', 'descripcion': 'Total ítems coincide con FTR', 'estado': '❌', 'valor': f'FTR={total_itm_ftr} vs real={total_itm_real}'})
 
-    # S7 — Monto total debe coincidir con suma de cantidades * precios
-    monto_ftr       = float(ftr_data[2])
+    monto_ftr = float(ftr_data[2])
     monto_calculado = sum(int(itm[3]) * float(itm[5]) for itm in itm_data)
     if abs(monto_ftr - monto_calculado) < 0.01:
         reglas_aplicadas.append({'regla': 'S7', 'descripcion': 'Monto total verificado', 'estado': '✅', 'valor': f'S/. {monto_calculado:.2f}'})
@@ -99,7 +91,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         errores.append(f"Error semántico S7: monto en FTR es {monto_ftr} pero la suma real es {monto_calculado:.2f}")
         reglas_aplicadas.append({'regla': 'S7', 'descripcion': 'Monto total verificado', 'estado': '❌', 'valor': f'FTR={monto_ftr} vs calculado={monto_calculado:.2f}'})
 
-    # S8 — Motivo válido
     motivo = hdr_data[5]
     if motivo in ['VENTA', 'COMPRA', 'DEVOLUCION']:
         reglas_aplicadas.append({'regla': 'S8', 'descripcion': 'Motivo de traslado válido', 'estado': '✅', 'valor': motivo})
@@ -107,7 +98,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         errores.append(f"Error semántico S8: motivo '{motivo}' no válido — usar VENTA, COMPRA o DEVOLUCION")
         reglas_aplicadas.append({'regla': 'S8', 'descripcion': 'Motivo de traslado válido', 'estado': '❌', 'valor': motivo})
 
-    # S9 — Moneda válida
     moneda = hdr_data[6]
     if moneda in ['PEN', 'USD']:
         reglas_aplicadas.append({'regla': 'S9', 'descripcion': 'Moneda válida', 'estado': '✅', 'valor': moneda})
@@ -115,7 +105,6 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         errores.append(f"Error semántico S9: moneda '{moneda}' no válida — usar PEN o USD")
         reglas_aplicadas.append({'regla': 'S9', 'descripcion': 'Moneda válida', 'estado': '❌', 'valor': moneda})
 
-    # S10 — Estado válido
     estado = ftr_data[3]
     if estado in ['PENDIENTE', 'PROCESADO', 'ANULADO']:
         reglas_aplicadas.append({'regla': 'S10', 'descripcion': 'Estado de orden válido', 'estado': '✅', 'valor': estado})
@@ -124,18 +113,18 @@ def analizar_semantico(resultado_lexico: dict) -> dict:
         reglas_aplicadas.append({'regla': 'S10', 'descripcion': 'Estado de orden válido', 'estado': '❌', 'valor': estado})
 
     return {
-        'errores':          errores,
-        'valido':           len(errores) == 0,
+        'errores': errores,
+        'valido': len(errores) == 0,
         'reglas_aplicadas': reglas_aplicadas,
         'resumen': {
-            'codigo_orden':  hdr_data[1],
-            'ruc_emisor':    ruc_emisor,
-            'ruc_receptor':  ruc_receptor,
-            'fecha':         fecha.strftime('%Y-%m-%d') if fecha else fecha_raw,
-            'motivo':        motivo,
-            'moneda':        moneda,
-            'total_items':   total_itm_real,
-            'monto_total':   monto_calculado,
-            'estado':        estado
+            'codigo_orden': hdr_data[1],
+            'ruc_emisor': ruc_emisor,
+            'ruc_receptor': ruc_receptor,
+            'fecha': fecha.strftime('%Y-%m-%d') if fecha else fecha_raw,
+            'motivo': motivo,
+            'moneda': moneda,
+            'total_items': total_itm_real,
+            'monto_total': monto_calculado,
+            'estado': estado
         }
     }
